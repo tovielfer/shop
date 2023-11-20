@@ -17,12 +17,14 @@ namespace shop.Controllers
         }
 
 
-        [HttpGet("{id}")]
-        public ActionResult<Product> Get(int id)
+        [HttpGet("{price}")]
+        public ActionResult<Product> Get(int price)
         {
-            var product = products[id];
+            var product = products.Find(pro => pro.Price == price);
             if (product == null)
                 return NotFound();
+            products.Remove(product);
+            products.Add(product);
             return Ok();
         }
 
@@ -32,13 +34,14 @@ namespace shop.Controllers
             products.Add(pro);
         }
 
-        public ActionResult<Product> Put(int id, [FromBody] Product pro)
+        [HttpPut("{id}/{price}")]
+
+        public ActionResult<Product> Put(int id,int price, [FromBody] Product pro)
         {
             var product = products.Find(pro => pro.Id == id);
             if (product == null)
                 return NotFound();
-            products.Remove(product);
-            products.Add(pro);
+            product.Price=price;
             return Ok();
         }
 
