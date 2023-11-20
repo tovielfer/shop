@@ -35,7 +35,7 @@ GET https://localhost:7275/api/Product
  GET   https://localhost:7275/api/Product/1
 - הוספת מוצר
 POST  https://localhost:7275/api/Product
-- עדכון מוצר
-PUT https://localhost:7275/api/Product/1
+- עדכון מחיר מוצר
+PUT https://localhost:7275/api/Product/1/12
 - מחיקת מוצר
 DELETE   https://localhost:7275/api/Product/1
