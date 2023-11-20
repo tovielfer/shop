@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using shop.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -6,38 +7,50 @@ namespace shop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VEmployeeController : ControllerBase
+    public class EmployeeController : ControllerBase
     {
-        // GET: api/<VEmployeeController>
+        private static List <Employee> employees=new List<Employee>();
         [HttpGet]
-        public IEnumerable<string> Get()
+        public List<Employee> Get()
         {
-            return new string[] { "value1", "value2" };
+            return employees;
         }
 
-        // GET api/<VEmployeeController>/5
+
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<Employee> Get(int id)
         {
-            return "value";
+            var employee = employees[id];
+            if(employee == null)
+                return NotFound();
+            return Ok();        
         }
 
-        // POST api/<VEmployeeController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Employee emp)
         {
+            employees.Add(emp);
         }
 
-        // PUT api/<VEmployeeController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult<Employee> Put(int id, [FromBody] Employee emp)
         {
+            var employee = employees.Find(emp => emp.Id == id);
+            if (employee == null)
+                return NotFound();
+            employees.Remove(employee);
+            employees.Add(emp);
+            return Ok();
         }
 
-        // DELETE api/<VEmployeeController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<Employee> Delete(int id)
         {
+            Employee emp = employees.Find(emp => emp.Id == id);
+            if(emp == null)
+                return NotFound();
+            employees.Remove(emp);
+            return Ok();
         }
     }
 }

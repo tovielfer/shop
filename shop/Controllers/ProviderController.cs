@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using shop.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -6,38 +7,50 @@ namespace shop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProvideController : ControllerBase
+    public class ProviderController : ControllerBase
     {
-        // GET: api/<ProvideController>
+        private static List<Provider> providers = new List<Provider>();
         [HttpGet]
-        public IEnumerable<string> Get()
+        public List<Provider> Get()
         {
-            return new string[] { "value1", "value2" };
+            return providers;
         }
 
-        // GET api/<ProvideController>/5
+
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<Provider> Get(int id)
         {
-            return "value";
+            var provider = providers[id];
+            if (provider == null)
+                return NotFound();
+            return Ok();
         }
 
-        // POST api/<ProvideController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Provider pro)
         {
+            providers.Add(pro);
         }
 
-        // PUT api/<ProvideController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult<Provider> Put(int id, [FromBody] Provider pro)
         {
+            var provider = providers.Find(pro => pro.Id == id);
+            if (provider == null)
+                return NotFound();
+            providers.Remove(provider);
+            providers.Add(pro);
+            return Ok();
         }
 
-        // DELETE api/<ProvideController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<Provider> Delete(int id)
         {
+            var pro = providers.Find(p => p.Id == id);
+            if (pro == null)
+                return NotFound();
+            providers.Remove(pro);
+            return Ok();
         }
     }
 }
