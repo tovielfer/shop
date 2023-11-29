@@ -1,15 +1,13 @@
 ﻿namespace shop.Entities
 {
-    public enum Position
-    {
-        managar,cashier,salesman
-    }
-    public class Employee
+
+    public class Order
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Salary { get; set; }
-        public Position Position { get; set; }
+        public Provider CurrentProvider { get; set; }
+        public int Sum { get; set; }
+        public Dictionary<Product,int> products { get; set; }
 
     }
 }

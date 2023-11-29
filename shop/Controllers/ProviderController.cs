@@ -9,47 +9,47 @@ namespace shop.Controllers
     [ApiController]
     public class ProviderController : ControllerBase
     {
-        private static List<Provider> providers = new List<Provider>();
+        private DataContext context;
         [HttpGet]
         public List<Provider> Get()
         {
-            return providers;
+            return context.Providers;
         }
 
 
         [HttpGet("{id}")]
-        public ActionResult<Provider> Get(int id)
+        public IActionResult Get(int id)
         {
-            var provider = providers[id];
+            var provider = context.Providers[id];
             if (provider == null)
                 return NotFound();
-            return Ok();
+            return Ok(provider);
         }
 
         [HttpPost]
         public void Post([FromBody] Provider pro)
         {
-            providers.Add(pro);
+            context.Providers.Add(pro);
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Provider> Put(int id, [FromBody] Provider pro)
+        public IActionResult Put(int id, [FromBody] Provider pro)
         {
-            var provider = providers.Find(pro => pro.Id == id);
+            var provider = context.Providers.Find(pro => pro.Id == id);
             if (provider == null)
                 return NotFound();
-            providers.Remove(provider);
-            providers.Add(pro);
+            context.Providers.Remove(provider);
+            context.Providers.Add(pro);
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<Provider> Delete(int id)
+        public IActionResult Delete(int id)
         {
-            var pro = providers.Find(p => p.Id == id);
+            var pro = context.Providers.Find(p => p.Id == id);
             if (pro == null)
                 return NotFound();
-            providers.Remove(pro);
+            context.Providers.Remove(pro);
             return Ok();
         }
     }

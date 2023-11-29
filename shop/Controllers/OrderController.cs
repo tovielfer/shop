@@ -7,49 +7,49 @@ namespace shop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeeController : ControllerBase
+    public class OrderController : ControllerBase
     {
-        private static List <Employee> employees=new List<Employee>();
+        private DataContext context;
         [HttpGet]
-        public List<Employee> Get()
+        public List<Order> Get()
         {
-            return employees;
+            return context.Orders;
         }
 
 
         [HttpGet("{id}")]
-        public ActionResult<Employee> Get(int id)
+        public IActionResult Get(int id)
         {
-            var employee = employees[id];
-            if(employee == null)
+            var order = context.Orders[id];
+            if(order == null)
                 return NotFound();
-            return Ok();        
+            return Ok(order);        
         }
 
         [HttpPost]
-        public void Post([FromBody] Employee emp)
+        public void Post([FromBody] Order ord)
         {
-            employees.Add(emp);
+            context.Orders.Add(ord);
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Employee> Put(int id, [FromBody] Employee emp)
+        public IActionResult Put(int id, [FromBody] Order ord)
         {
-            var employee = employees.Find(emp => emp.Id == id);
-            if (employee == null)
+            var order = context.Orders.Find(o => o.Id == id);
+            if (order == null)
                 return NotFound();
-            employees.Remove(employee);
-            employees.Add(emp);
+            context.Orders.Remove(order);
+            context.Orders.Add(ord);
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<Employee> Delete(int id)
+        public IActionResult Delete(int id)
         {
-            Employee emp = employees.Find(emp => emp.Id == id);
-            if(emp == null)
+            Order ord = context.Orders.Find(o => o.Id == id);
+            if(ord == null)
                 return NotFound();
-            employees.Remove(emp);
+            context.Orders.Remove(ord);
             return Ok();
         }
     }
